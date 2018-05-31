@@ -56,10 +56,10 @@ def countFreqs(myTermsList, myText):
 #----------------------------------------------------------------------#
 # Format an email subject and body as a raw html string                #
 #----------------------------------------------------------------------#
-def formatEmail(myPosScore, myNegScore, mySubject, myBody):
+def formatEmail(myPosScore, myNegScore, myBody):
     return ("Prob in category: " + str(myPosScore) +
             " | Prob. not in category: " + str(myNegScore) +
-            "<hr><h3>" + mySubject + "</h3><hr>" + myBody)
+            "</h3><hr>" + myBody)
 
 #------------------------------------------------#
 # Return rows and cells of classifier accuracy   #
