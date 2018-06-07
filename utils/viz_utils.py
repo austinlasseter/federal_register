@@ -112,12 +112,12 @@ def generateTruthTable(myStats):
         html.Tr([
             html.Th(),
             html.Th(),
-            html.Th("Personal"),
-            html.Th("Not Personal")
+            html.Th("In Target Class"),
+            html.Th("Not in Target Class")
         ]),
         html.Tr([
             html.Th(children="Classifier Assigned", style={'rowSpan': 2}),
-            html.Th("Personal"),
+            html.Th("In Target Class"),
             html.Td(
                 id = 'truePositivesCell',
                 children = myStats['truePositive'],
@@ -131,7 +131,7 @@ def generateTruthTable(myStats):
         ]),
         html.Tr([
             html.Th(),
-            html.Th("Not Personal"),
+            html.Th("Not in Target Class"),
             html.Td(
                 id = 'falseNegativesCell',
                 children = myStats['falseNegative'],
@@ -312,7 +312,7 @@ def highlightTerms(textString, termsList, myStopwords):
             start = span[0]
             end = span[1]
             highlightedText += top[currentOffset:start]
-            highlightedText += list("<span style=\"background-color: #2ca02c\">")
+            highlightedText += list("<span style=\"background-color: yellow\">")
             highlightedText += top[start:end]
             highlightedText += list("</span>")
             currentOffset = (end)
@@ -321,7 +321,7 @@ def highlightTerms(textString, termsList, myStopwords):
             start = span[0]
             end = span[1]
             highlightedText += top[currentOffset:start]
-            highlightedText += list("<span style=\"background-color: grey\">")
+            highlightedText += list("<span style=\"background-color: #9999ff\">")
             highlightedText += top[start:end]
             highlightedText += list("</span>")
             currentOffset = (end)

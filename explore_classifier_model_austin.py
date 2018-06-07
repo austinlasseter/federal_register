@@ -23,10 +23,10 @@ import pickle
 import nltk
 from nltk.corpus import stopwords
 import getopt
-
-def usage():
-    sys.stdout.write("Usage: python viz_classifyer.py [-d|--directory= <top directory of the github repository where your directory yaml sits>] [-n|--number= <number of output emails requested>] [-h|?|--help]")
-    return True
+#
+# def usage():
+#     sys.stdout.write("Usage: python viz_classifyer.py [-d|--directory= <top directory of the github repository where your directory yaml sits>] [-n|--number= <number of output emails requested>] [-h|?|--help]")
+#     return True
 
 #---------------------------------------------------#
 # Return name of dataframe based on input parameter #
@@ -81,17 +81,17 @@ from utils.viz_utils import generateAccuracyTable,generateTruthTable
 from utils.viz_utils import load_term_scores
 from utils.viz_utils import generateTermsTable
 
-output_directory="C://Users//alasseter//Documents//Projects//federal_register"
+output_directory='/Users/austinlasseter/github_repos/federal_register'
 # #Load term scores from csv
-termScores=pd.read_csv(output_directory + '//' + 'termScores.csv', index_col=None)
+termScores=pd.read_csv(output_directory + '/' + 'termScores.csv', index_col=None)
 
 #Load dict of accuracy scores for classifiery
-with open(output_directory + '//' + 'classifierStats.pyc', 'rb') as f:
+with open(output_directory + '/' + 'classifierStats.pyc', 'rb') as f:
     classifierStats = pickle.load(f)
     f.close()
 
 #Load results of testing each test doc
-with open(output_directory + '//' + 'classifierTestResults.pyc', 'rb') as f:
+with open(output_directory + '/' + 'classifierTestResults.pyc', 'rb') as f:
     classifierTestResults = pickle.load(f)
     f.close()
 
@@ -111,7 +111,8 @@ responseTypes = ['truePositive', 'trueNegative', 'falsePositive', 'falseNegative
 #-------------------------------------------------------------------#
 termsList = termScores['term'].tolist()
 selectedDF = resultsDF_tp
-numEmailsInSelectedDF = selectedDF.shape[0]
+# numEmailsInSelectedDF = selectedDF.shape[0]
+numEmailsInSelectedDF = len(selectedDF)
 emailPointer = 1
 
 #Highlight the terms in the email which are in the visible list
@@ -119,7 +120,7 @@ emailPointer = 1
 highlightedEmailBody = highlightTerms(resultsDF_tp.iloc[(emailPointer - 1)].abstract, termsList, stopwords_english)
 posScore = selectedDF.iloc[(emailPointer - 1)].posProbability
 negScore = selectedDF.iloc[(emailPointer - 1)].negProbability
-subjectPlusBody = (resultsDF_tp.iloc[(emailPointer -1)].abstract)
+# subjectPlusBody = (resultsDF_tp.iloc[(emailPointer -1)].abstract)
 
 #------------------------------------------------------------------------#
 #Local version of stylesheet https://codepen.io/chriddyp/pen/bWLwgP.css #
@@ -287,7 +288,8 @@ def update_df_selection(input1):
     #Reset to ist email
     emailPointer = 1
 
-    return (" of {}".format(selectedDF.shape[0]))
+    # return (" of {}".format(selectedDF.shape[0]))
+    return (" of {}".format(len(selectedDF)))
 
 #------------------------------------------------------------#
 # Update the text in the iframe                              #
@@ -309,7 +311,8 @@ def update_displayed_email_text(nClicks, inputDF, inputEmailNumber):
     #Switch to selected type of emails, true positive, false pos, etc
     selectedDF = chooseDF(inputDF)
 
-    if (int(inputEmailNumber) > selectedDF.shape[0]):
+    # if (int(inputEmailNumber) > selectedDF.shape[0]):
+    if (int(inputEmailNumber) > len(selectedDF)):
         emailPointer = 1
     else:
         emailPointer = int(inputEmailNumber)
@@ -319,7 +322,7 @@ def update_displayed_email_text(nClicks, inputDF, inputEmailNumber):
     negProbability = selectedDF.iloc[(emailPointer - 1)].negProbability
 
     # highlightedEmailSubject = highlightTerms(selectedDF.iloc[(emailPointer - 1)].subject, termsList, stopwords_english)
-    highlightedEmailBody = highlightTerms(selectedDF.iloc[(emailPointer - 1)].body, termsList, stopwords_english)
+    highlightedEmailBody = highlightTerms(selectedDF.iloc[(emailPointer - 1)].abstract, termsList, stopwords_english)
 
     return(formatEmail(posProbability,
                        negProbability,
