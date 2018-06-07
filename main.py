@@ -422,19 +422,20 @@ stylesheets = ['bWLwgP.css']
 #--------------------------------------------#
 # Start building the dashboard - initialize  #
 #--------------------------------------------#
-app = dash.Dash()
+app = dash.Dash(__name__)
+application=app.server
 app.title = "ContextEdge Rocks!"
 
 #--------------------------------------------#
 #Allow locally-served css
 #--------------------------------------------#
-app.css.config.serve_locally=True
-app.scripts.config.serve_locally=True
-
-@app.server.route('/static/<path:path>')
-def static_file(path):
-    static_folder = os.path.join(os.getcwd(), 'static')
-    return send_from_directory(static_folder, path)
+# app.css.config.serve_locally=True
+# app.scripts.config.serve_locally=True
+#
+# @app.server.route('/static/<path:path>')
+# def static_file(path):
+#     static_folder = os.path.join(os.getcwd(), 'static')
+#     return send_from_directory(static_folder, path)
 
 #-----------------------------------------------------#
 # Layout dashboard with HTML and dash core components #
@@ -708,4 +709,5 @@ def sortTermsTable(mySortBy, mySortOrder):
     print("{}|{}".format(mySortBy, mySortOrder))
     return(generateTermsTable(termScores, mySortBy, mySortOrder))
 
-app.run_server(debug=True)
+if __name__=='__main__':
+    application.run(debug=True)
