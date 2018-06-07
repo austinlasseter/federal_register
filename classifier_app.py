@@ -457,17 +457,16 @@ app.layout = html.Div(children = [
                          style={'textAlign': 'center'}) #H1
              ]), #bannerDiv,
     html.Div("This app pulls 6,000 abstracts from the Federal Register, labeled \
-    according to the publishing agency. The app splits the data 70/30, trains a \
-    logistic classifier on 70 percent of the data, then predicts the other 30."),
-    html.H2("Overall Classifier Performance"),
-    html.Br(),
-    html.Br(),
+    according to the publishing agency. The app trains a logistic regression \
+    classifier on 70 percent of the data, then predicts the other 30 percent.\
+    The top 100 most important features are listed below and highlighted within \
+    each abstract; stopwords are highlighted in blue."),
     html.Div("Source of Text Data:"),
     html.A('Federal Register API', href='https://www.federalregister.gov/developers/api/v1'),
-    html.Br(),
-    html.Br(),
     html.Div("Target Class Includes:"),
     html.Div(list_of_agencies),
+    html.Br(),
+    html.H2("Overall Classifier Performance"),
     html.Br(),
     html.Div(id="classifier_stats_div", children =
              [
