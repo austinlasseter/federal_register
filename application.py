@@ -31,6 +31,9 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, roc_auc_score
 from sklearn.metrics import roc_curve, auc
 import base64
+# import matplotlib
+# matplotlib.use('qt4agg')
+# import matplotlib.pyplot as plt
 
 #----------------------------------------------------------------------#
 # Get Federal Data                                                     #
@@ -283,19 +286,18 @@ low50=pd.DataFrame(importance.tail(50))
 termScores=pd.concat([high50, low50], ignore_index=True)
 
 # Feature importance graphic
-import matplotlib.pyplot as plt
-
-import seaborn as sns
-sns.set(style="whitegrid", color_codes=True)
-
-ax = top10.set_index('term').plot(kind='bar', legend=False, fontsize=18, figsize=(15, 7))
-plt.title('Features with greatest predictive power',  fontsize=19)
-
-plt.xticks(rotation = 45,  fontsize=18)
-plt.xlabel('Features least or most associated with target', fontsize=18)
-plt.yticks(rotation = 0,  fontsize=18)
-plt.ylabel('Coefficient', rotation=90,  fontsize=18)
-plt.savefig('feature_importance.png', dpi=300, bbox_inches='tight')
+#
+# import seaborn as sns
+# sns.set(style="whitegrid", color_codes=True)
+#
+# ax = top10.set_index('term').plot(kind='bar', legend=False, fontsize=18, figsize=(15, 7))
+# plt.title('Features with greatest predictive power',  fontsize=19)
+#
+# plt.xticks(rotation = 45,  fontsize=18)
+# plt.xlabel('Features least or most associated with target', fontsize=18)
+# plt.yticks(rotation = 0,  fontsize=18)
+# plt.ylabel('Coefficient', rotation=90,  fontsize=18)
+# plt.savefig('feature_importance.png', dpi=300, bbox_inches='tight')
 feature_import = base64.b64encode(open('feature_importance.png', 'rb').read())
 
 # ROC-AUC Score
@@ -305,18 +307,18 @@ ROC_AUC = dict()
 # For the target class, find the area under the curve:
 FPR[1], TPR[1], _ = roc_curve(y_test, probabilities)
 ROC_AUC[1] = auc(FPR[1], TPR[1])
-# Let's draw that:
-plt.style.use('seaborn-white')
-plt.figure(figsize=[11,9])
-plt.plot(FPR[1], TPR[1], label='ROC curve (area = %0.2f)' % ROC_AUC[1], linewidth=4)
-plt.plot([0, 1], [0, 1], 'k--', linewidth=4)
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.05])
-plt.xlabel('False Positive Rate', fontsize=18)
-plt.ylabel('True Positive Rate', fontsize=18)
-plt.title('ROC Curve', fontsize=18)
-plt.legend(loc="lower right", fontsize=18);
-plt.savefig('rocauc.png', dpi=300, bbox_inches='tight')
+# # Let's draw that:
+# plt.style.use('seaborn-white')
+# plt.figure(figsize=[11,9])
+# plt.plot(FPR[1], TPR[1], label='ROC curve (area = %0.2f)' % ROC_AUC[1], linewidth=4)
+# plt.plot([0, 1], [0, 1], 'k--', linewidth=4)
+# plt.xlim([0.0, 1.0])
+# plt.ylim([0.0, 1.05])
+# plt.xlabel('False Positive Rate', fontsize=18)
+# plt.ylabel('True Positive Rate', fontsize=18)
+# plt.title('ROC Curve', fontsize=18)
+# plt.legend(loc="lower right", fontsize=18);
+# plt.savefig('rocauc.png', dpi=300, bbox_inches='tight')
 rocauc_image = base64.b64encode(open('rocauc.png', 'rb').read())
 
 
@@ -422,8 +424,9 @@ stylesheets = ['bWLwgP.css']
 #--------------------------------------------#
 # Start building the dashboard - initialize  #
 #--------------------------------------------#
-app = dash.Dash(__name__)
-application=app.server
+application = dash.Dash(__name__)
+app = application
+# application=app.server
 app.title = "ContextEdge Rocks!"
 
 #--------------------------------------------#
@@ -461,10 +464,10 @@ app.layout = html.Div(children = [
     according to the publishing agency. The app trains a logistic regression \
     classifier on 70 percent of the data, then predicts the other 30 percent.\
     The top 100 most important features are listed below and highlighted within \
-    each abstract; stopwords are highlighted in blue."),
+    each abstract; feature with zero importance are highlighted in blue."),
     html.Div("Source of Text Data:"),
     html.A('Federal Register API', href='https://www.federalregister.gov/developers/api/v1'),
-    html.Div("Target Class Includes:"),
+    html.Div("Target Class includes abstracts from top 5 agencies (about half the dataset):"),
     html.Div(list_of_agencies),
     html.Br(),
     html.H2("Overall Classifier Performance"),
