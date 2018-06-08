@@ -424,9 +424,8 @@ stylesheets = ['bWLwgP.css']
 #--------------------------------------------#
 # Start building the dashboard - initialize  #
 #--------------------------------------------#
-application = dash.Dash(__name__)
-app = application
-# application=app.server
+app = dash.Dash(__name__)
+application=app.server
 app.title = "ContextEdge Rocks!"
 
 #--------------------------------------------#
@@ -713,4 +712,4 @@ def sortTermsTable(mySortBy, mySortOrder):
     return(generateTermsTable(termScores, mySortBy, mySortOrder))
 
 if __name__=='__main__':
-    application.run(debug=True)
+    application.run(debug=True, port=8080)
